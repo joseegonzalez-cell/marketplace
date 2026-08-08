@@ -21,4 +21,5 @@ public record ClienteResponseDTO(
         LocalDateTime fechaRegistro
 
 ) {
+
 }
