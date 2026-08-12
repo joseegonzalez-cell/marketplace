@@ -37,6 +37,7 @@ public class ClienteServiceImpl implements ClienteService {
 
         try {
             Cliente guardado = clienteRepository.save(cliente);
+
             return clienteMapper.toResponse(guardado);
 
         } catch (DataIntegrityViolationException e) {
@@ -53,39 +54,6 @@ public class ClienteServiceImpl implements ClienteService {
         }
     }
 
-    // Actualizar usando ClienteResponseDTO
-    @Override
-    public ClienteResponseDTO actualizar(
-            Long id,
-            ClienteResponseDTO responseDTO) {
-
-        Cliente cliente = buscarClientePorId(id);
-
-        /*
-         * Este método existe porque está definido en ClienteService.
-         *
-         * La actualización principal se realiza mediante
-         * ClienteUpdateRequestDTO.
-         */
-        if (responseDTO == null) {
-            throw new IllegalArgumentException(
-                    "Los datos de actualización no pueden ser null"
-            );
-        }
-
-        return clienteMapper.toResponse(cliente);
-    }
-
-    // Obtener cliente por ID
-    @Override
-    @Transactional(readOnly = true)
-    public ClienteResponseDTO obtnerPorId(Long id) {
-
-        Cliente cliente = buscarClientePorId(id);
-
-        return clienteMapper.toResponse(cliente);
-    }
-
     // Actualizar cliente
     @Override
     public ClienteResponseDTO actualizar(
@@ -94,11 +62,21 @@ public class ClienteServiceImpl implements ClienteService {
 
         Cliente cliente = buscarClientePorId(id);
 
-        // Valida cédula y email duplicados
+        // Valida campos únicos
         validarDuplicados(cliente, requestDTO);
 
-        // Actualiza únicamente los campos no nulos
+        // Actualiza campos no nulos
         clienteMapper.updateEntityFromDto(requestDTO, cliente);
+
+        return clienteMapper.toResponse(cliente);
+    }
+
+    // Obtener cliente por ID
+    @Override
+    @Transactional(readOnly = true)
+    public ClienteResponseDTO obtenerPorId(Long id) {
+
+        Cliente cliente = buscarClientePorId(id);
 
         return clienteMapper.toResponse(cliente);
     }
@@ -170,7 +148,7 @@ public class ClienteServiceImpl implements ClienteService {
                 );
     }
 
-    // Validar duplicados en actualización
+    // Validar duplicados
     private void validarDuplicados(
             Cliente cliente,
             ClienteUpdateRequestDTO requestDTO) {
@@ -197,5 +175,4 @@ public class ClienteServiceImpl implements ClienteService {
             );
         }
     }
-
 }

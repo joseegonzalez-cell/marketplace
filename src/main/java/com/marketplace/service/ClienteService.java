@@ -2,32 +2,39 @@ package com.marketplace.service;
 
 import com.marketplace.dto.ClienteRequestDTO;
 import com.marketplace.dto.ClienteResponseDTO;
+import com.marketplace.dto.ClienteUpdateRequestDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface ClienteService {
 
-    // Crear Cliente
+    // Crear cliente
     ClienteResponseDTO crear(ClienteRequestDTO requestDTO);
 
     // Actualizar cliente
-    ClienteResponseDTO actualizar(Long id, ClienteResponseDTO responseDTO);
+    ClienteResponseDTO actualizar(
+            Long id,
+            ClienteUpdateRequestDTO requestDTO
+    );
 
-    // Obtener Cliente por ID
-    ClienteResponseDTO obtnerPorId(Long id);
+    // Obtener cliente por ID
+    ClienteResponseDTO obtenerPorId(Long id);
 
-    //Listar todos los Clientes
+    // Listar todos los clientes
     Page<ClienteResponseDTO> listarTodos(Pageable pageable);
 
-    // Listar Clientes activos
+    // Listar clientes activos
     Page<ClienteResponseDTO> listarActivos(Pageable pageable);
 
-    // Eliminar cliente
+    // Eliminación lógica
     void eliminar(Long id);
 
-    // Obtener Cliente por Email
+    // Obtener cliente por email
     ClienteResponseDTO obtenerPorEmail(String email);
 
-    // Buscar Cliente por nombre
-    Page<ClienteResponseDTO> buscarPorNombre(String nombre, Pageable pageable);
+    // Buscar clientes por nombre
+    Page<ClienteResponseDTO> buscarPorNombre(
+            String nombre,
+            Pageable pageable
+    );
 }
